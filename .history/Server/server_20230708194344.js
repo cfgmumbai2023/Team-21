@@ -7,8 +7,6 @@ const userRoute = require("./routes/user.routes.js");
 const courseRoute = require("./routes/course.routes.js");
 const cloudRoute = require("./routes/cloudinary.routes.js");
 
-app.use(express.json());
-
 app.use(
   cors({
     origin: "*",
