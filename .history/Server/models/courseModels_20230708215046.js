@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const courseSchema = new mongoose.Schema({
   title: String,
   sport: {
-    name: String,
+    title: String,
   },
   minCertificateLevel: Number,
   content: [

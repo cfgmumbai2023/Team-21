@@ -39,23 +39,10 @@ router.route("/filteredCourses/:id").get(async (req, res) => {
   const courses = await Course.find({});
   const user = await User.findOne({ _id: req.params.id });
   const arr = [];
-  const sportsLevel = new Map();
-  user.certificates.forEach((certificate) => {
-    sportsLevel.set(certificate.sport, certificate.level);
-  });
   courses.forEach((course) => {
-    if (
-      course.minCertificateLevel <=
-      (sportsLevel.get(course.sport) == undefined
-        ? 1
-        : sportsLevel.get(course.sport))
-    ) {
+    if (course.minCertificateLevel <= user.certificateLevel) {
       arr.push(course);
     }
-  });
-  res.status(200).json({
-    success: true,
-    courses: arr,
   });
 });
 

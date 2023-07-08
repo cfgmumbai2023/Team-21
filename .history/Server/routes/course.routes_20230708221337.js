@@ -53,10 +53,6 @@ router.route("/filteredCourses/:id").get(async (req, res) => {
       arr.push(course);
     }
   });
-  res.status(200).json({
-    success: true,
-    courses: arr,
-  });
 });
 
 module.exports = router;

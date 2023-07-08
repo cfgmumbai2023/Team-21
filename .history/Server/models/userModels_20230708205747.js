@@ -20,23 +20,13 @@ const userSchema = new mongoose.Schema({
     required: [true, "Please Enter Your Password"],
   },
 
-  coursesUploaded: {
-    type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Course" }],
-    default: [],
-  },
+  files: { type: [{ type: Schema.Types.ObjectId, ref: "File" }], default: [] },
+  hash: { type: [String], default: [] },
 
-  coursesTaken: {
-    type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Course" }],
-    default: [],
-  },
-
-  certificate: [
+  liscence: [
     {
-      sport: {
-        type: String,
-      },
-      level: String,
-      link: String,
+      football: String,
+      cricket: String,
     },
   ],
 

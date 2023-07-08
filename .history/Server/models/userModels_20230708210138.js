@@ -36,7 +36,6 @@ const userSchema = new mongoose.Schema({
         type: String,
       },
       level: String,
-      link: String,
     },
   ],
 

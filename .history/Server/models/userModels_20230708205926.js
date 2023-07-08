@@ -28,15 +28,13 @@ const userSchema = new mongoose.Schema({
   coursesTaken: {
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Course" }],
     default: [],
-  },
+  }
+  hash: { type: [String], default: [] },
 
-  certificate: [
+  liscence: [
     {
-      sport: {
-        type: String,
-      },
-      level: String,
-      link: String,
+      football: String,
+      cricket: String,
     },
   ],
 

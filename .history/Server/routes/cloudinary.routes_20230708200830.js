@@ -15,7 +15,7 @@ const options = {
 
 router.route("/uploadImages").get(async (req, res) => {
   try {
-    const result = await cloudinary.uploader.upload("./data/image.jpg", {
+    const result = await cloudinary.uploader.upload("../data/image.jpg", {
       folder: "sports",
     });
     console.log(result);
