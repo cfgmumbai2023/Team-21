@@ -3,6 +3,15 @@ const Course = require("../models/courseModels");
 const User = require("../models/userModels");
 const router = express.Router();
 
+// For getting all courses
+router.route("/allcourses").get(async (req, res) => {
+  const courses = await Course.find();
+  res.status(200).json({
+    success: true,
+    courses,
+  });
+});
+
 router.route("/upload").post(async (req, res) => {
   try {
     /*
@@ -29,6 +38,7 @@ router.route("/upload").post(async (req, res) => {
             message: "Only Pro certificate holder can create courses"
           })
         }
+        else found_ = true;
       }
     });
     if(!found_){
@@ -54,9 +64,11 @@ router.route("/upload").post(async (req, res) => {
 });
 
 //For registring User to a course
+// In params- courseId
+// In body- {id: userId}
 router.route("/register/:id").post(async (req, res) => {
   const course = await Course.findOne({ _id: req.params.id });
-  const user = await User.findOne({ _id: req.body.userid });
+  const user = await User.findOne({ _id: req.body.id });
   user.coursesTaken.push(course._id);
   await user.save();
   res.status(200).json({
@@ -74,21 +86,14 @@ router.route("/:id").get(async (req, res) => {
   });
 });
 
-//For getting all courses
-router.route("/allcourses").get(async (req, res) => {
-  const courses = await Course.find({});
-  res.status(200).json({
-    success: true,
-    courses,
-  });
-});
+
 
 router.route("/filteredCourses/:id").get(async (req, res) => {
   const courses = await Course.find({});
   const user = await User.findOne({ _id: req.params.id });
   const arr = [];
   const sportsLevel = new Map();
-  user.certificates.forEach((certificate) => {
+  user.certificate.forEach((certificate) => {
     sportsLevel.set(certificate.sport, certificate.level);
   });
   courses.forEach((course) => {
