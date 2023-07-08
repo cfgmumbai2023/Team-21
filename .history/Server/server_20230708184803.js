@@ -3,9 +3,7 @@ const app = express();
 const dotenv = require("dotenv");
 dotenv.config();
 const cors = require("cors");
-const userRoute = require("./routes/user.routes.js");
-const courseRoute = require("./routes/course.routes.js");
-const cloudRoute = require("./routes/cloudinary.routes.js");
+const userRoute = require("./routes/user.routes");
 
 app.use(
   cors({
@@ -29,10 +27,6 @@ async function mongoconnect() {
 
 mongoconnect();
 // Import Routes
-
-app.use("/course", courseRoute);
-app.use("/user", userRoute);
-app.use("/cloudinary", cloudRoute);
 
 app.listen(process.env.PORT, (req, res) => {
   console.log(`Server is running on port ${process.env.PORT}`);
