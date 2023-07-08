@@ -41,12 +41,10 @@ router.route("/upload").post(async (req, res) => {
       title: req.body.title,
       sport: req.body.sport,
       minCertificateLevel: req.body.gradingLevel,
-      contents: [
-        {
-          title: "Hello",
-          link: "https://www.youtube.com/watch?v=QwievZ1Tx-8",
-        },
-      ],
+      contents: {
+        title: "Hello",
+        link: "https://www.youtube.com/watch?v=QwievZ1Tx-8",
+      },
       // createdBy: req.body.id,
     };
     await Course.create(course);
