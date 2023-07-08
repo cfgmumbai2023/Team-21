@@ -1,8 +1,6 @@
 const mongoose = require("mongoose");
-const validator = require("validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const Course = require("./courseModels");
 // const crypto = require("crypto");
 
 const userSchema = new mongoose.Schema({
@@ -13,7 +11,6 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please Enter Your Email"],
     unique: true,
-    validate: [validator.isEmail, "Please Enter a valid Email"],
   },
   password: {
     type: String,
@@ -21,12 +18,12 @@ const userSchema = new mongoose.Schema({
   },
 
   coursesUploaded: {
-    type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Course" }],
+    type: [{ type: mongoose.Schema.ObjectId, ref: "Course" }],
     default: [],
   },
 
   coursesTaken: {
-    type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Course" }],
+    type: [{ type: mongoose.Schema.ObjectId, ref: "Course" }],
     default: [],
   },
 
