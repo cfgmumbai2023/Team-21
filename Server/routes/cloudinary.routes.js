@@ -1,4 +1,6 @@
 const express = require("express");
+const multe = require("multer");
+const DIR = "./public";
 const router = express.Router();
 const cloudinary = require("cloudinary").v2;
 cloudinary.config({
