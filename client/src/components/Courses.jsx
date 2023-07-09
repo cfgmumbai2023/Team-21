@@ -83,9 +83,25 @@ import {ToastContainer,toast} from 'react-toastify'
       const dataRes = await response.json();
       console.log(dataRes);
       if(dataRes.success === true){
+        let flag = false;
         dataRes.user.certificate.forEach((c1)=>{
           if(c1.sport === sport && (c1.level) >= (level)){
+            flag = true;
             navigate(`/course/${id}`);
+          }
+          if(flag === false){
+            toast.error(
+              "Not Eligible to Upload a Course in this Sport",
+              {
+              position: "top-left",
+              autoClose: 1500,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              }
+            )
           }
         })
       }

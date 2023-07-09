@@ -12,6 +12,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import UploadWidget from "./Cloudinary/UploadWidget";
 import axios from "axios";
 import UploadCourseFiles from "./UploadCourseFiles";
+import IFFLogo from "./IFFlogo.png";
+
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -40,6 +42,90 @@ const SignUp = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         let formData=new FormData();
+        for(let i=0;i<files.length;i++){
+            console.log(files[i].file)
+            formData.append("attachments",files[i].file);
+        }
+
+        formData.append('courseTitle', courseTitle);
+        formData.append('sports', sports);
+        formData.append('gradingLevel', gradingLevel);
+        formData.append('userID',localStorage.getItem("id"));
+        
+        const response = await fetch(`http://localhost:5000/user/${localStorage.getItem("id")}`)
+        const dataRes = await response.json();
+        console.log(dataRes);
+        if(dataRes.success === true){
+            let flag = false;
+            dataRes.user.certificate.forEach(async (c1) => {
+              if(c1.sport === sports && (c1.level)  === "E"){
+                flag = true;
+                try{
+                    await axios.post(`http://localhost:5000/course/upload`,formData,{ headers: {
+                      'content-type': 'multipart/form-data'
+                    }})
+                    toast.success(
+                      "Successfully Added",
+                      {
+                      position: "top-left",
+                      autoClose: 1500,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                      }
+                  );
+                  navigate("/");
+                  
+                    
+                }
+                catch(error){
+                    const response = error.response;  
+                    console.log(response);     
+                    toast.error("Some Error Happened", {
+                      position: "top-left",
+                      autoClose: 2000,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                    });    
+                }
+              }
+            });
+            if(flag === false){
+                toast.error(
+                    "Not Eligible to Upload a Course in this Sport",
+                    {
+                    position: "top-left",
+                    autoClose: 1500,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    }
+                  )
+            }
+          }
+        //   else{
+        //     alert("You are not eligible to upload the Content")
+        //     console.log("Not eligible")
+        //       toast.error(
+        //         "Not Eligible to Upload a Course in this Sport",
+        //         {
+        //         position: "top-left",
+        //         autoClose: 1500,
+        //         hideProgressBar: false,
+        //         closeOnClick: true,
+        //         pauseOnHover: true,
+        //         draggable: true,
+        //         progress: undefined,
+        //         }
+        //       )
+        //     }
         // const data = new FormData();
         // data.append("file",video);
         // data.append("upload_preset",'ziz4c8ad');
@@ -54,49 +140,8 @@ const SignUp = () => {
         
         // formData.append('videoLink', );
         
-        for(let i=0;i<files.length;i++){
-            console.log(files[i].file)
-            formData.append("attachments",files[i].file);
-        }
-
-        formData.append('courseTitle', courseTitle);
-        formData.append('sports', sports);
-        formData.append('gradingLevel', gradingLevel);
-        formData.append('userID',localStorage.getItem("id"));
     
-        try{
-          await axios.post(`http://localhost:5000/course/upload`,formData,{ headers: {
-            'content-type': 'multipart/form-data'
-          }})
-          toast.success(
-            "Successfully Added",
-            {
-            position: "top-left",
-            autoClose: 1500,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            }
-        );
-        navigate("/");
         
-          
-        }
-        catch(error){
-          const response = error.response;       
-          toast.error("Some Error Happened", {
-            position: "top-left",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-        });
-          
-        }
         // setCourseTitle("");
         // setSports("");
         // setGradingLevel("");
@@ -118,7 +163,7 @@ const SignUp = () => {
                     <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                     <img
                         className="mx-auto h-10 w-auto"
-                        src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                        src={IFFLogo}
                         alt="Your Company"
                     />
                     <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
@@ -192,9 +237,10 @@ const SignUp = () => {
                         {/* <input type="file" multiple onChange={(e) => console.log(e.target.files)} /> */}
                         <div>
                         <button
+                            // disabled={true}
                             type="submit"
                             className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                            // onClick={handleSubmit}
+                            onClick={handleSubmit}
                         >
                             Add Course
                         </button>
